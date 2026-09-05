@@ -6,6 +6,9 @@ import v2Router from './router/v2/index.router'
 import { genericErrorHandler } from './middleware/error.middleware';
 // import logger from "./config/logger.config"
 import { attachCorrelationMiddleware } from './middleware/correlation.middleware';
+import sequelize from './db/models/sequelize';
+import logger from './config/logger.config';
+import { initializeAssociations } from './db/models/associations';
 
 
 app.use(express.json());
@@ -19,8 +22,16 @@ app.use(genericErrorHandler);
 
 
 
-app.listen(serverConfig.PORT,()=>{
-    console.log(`Listening to PORT ${serverConfig.PORT}`);
+app.listen(serverConfig.PORT, async()=>{
+   console.log(`Listening to PORT ${serverConfig.PORT}`);
     // logger.info(`press ctrl + C to stop the server`)
+     try {
+    initializeAssociations();
+    await sequelize.authenticate();
+    logger.info("Conntected to db successfully");
+    
+   } catch (error) {
+    logger.error("Something went wrong");
+   }
 
 })

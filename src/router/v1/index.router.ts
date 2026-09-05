@@ -1,6 +1,7 @@
 import express from 'express';
 import pingRouter from './ping_router';
 import movieRouter from './movie.router';
+import theatreRouter from './theatre.router';
 
 
 const v1Router = express.Router();
@@ -9,5 +10,7 @@ const v1Router = express.Router();
 
 v1Router.use('/ping',  pingRouter);
 v1Router.use('/movies',movieRouter);
+v1Router.use('/theatres',theatreRouter);
+
 
 export default v1Router;
